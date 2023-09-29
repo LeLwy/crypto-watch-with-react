@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import TableLine from './TableLine';
 import ToTop from './ToTop';
+import { useSelector } from 'react-redux';
+import { isStableCoin } from './Utils';
 
 const Table = ({coinsData}) => {
 
     const [rangeNumber, setRangeNumber] = useState(100);
-    const [orderBy, setOrderBy] = useState("")
+    const [orderBy, setOrderBy] = useState("");
+    const showStable = useSelector((state) => state.stableReducer.showStable);
+    const showFavList = useSelector((state) => state.listReducer.showList);
 
     const tableHeader = ["Prix", "MarketCap", "Volume", "1h", "1j", "1s", "1m", "6m", "1a", "ATH"]
 
@@ -59,6 +63,26 @@ const Table = ({coinsData}) => {
             {
                 coinsData && coinsData
                     .slice(0, rangeNumber)
+                    .filter((coin) => {
+
+                      if(showStable) {
+                        return coin;
+                      } else {
+                        if(isStableCoin(coin.symbol)) {
+                          return coin;
+                        }
+                      }
+                    })
+                    .filter((coin) => {
+                      if (showFavList) {
+                        let list = window.localStorage.coinList.split(",");
+                        if (list.includes(coin.id)) {
+                          return coin;
+                        }
+                      } else {
+                        return coin;
+                      }
+                    })
                     .sort((a, b) => {
                         switch (orderBy) {
                             case "Prix":
