@@ -52,7 +52,7 @@ const TableLine = ({ coin, index }) => {
                 </div>
             </div>
             <p>{ priceFormater(coin.current_price).toLocaleString() + " " }$</p>
-            <p className="mktcap">{ mktCapFormater(coin.market_cap).toLocaleString() + " " }Md$</p>
+            <p className="mktcap">{ mktCapFormater(coin.market_cap).toLocaleString() + " " }M$</p>
             <p className="volume">{ coin.total_volume.toLocaleString() + " " }$</p>
             <PercentChange percent={coin.price_change_percentage_1h_in_currency} />
             <PercentChange percent={coin.price_change_percentage_24h} />
